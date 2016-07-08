@@ -3,7 +3,7 @@ using namespace std;
 
 const int MaxN = 100100;
 
-int nV, nE, top, scc_cnt = 0, tag = 0;
+int nV, nE, scc_cnt = 0, tag = 0;
 int visited[MaxN], lowlnk[MaxN];
 bool inHeap[MaxN];
 vector <int> graph[MaxN];
