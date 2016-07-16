@@ -1,25 +1,46 @@
+#include <cstdio>
+#include <vector>
+#include <stack>
+#include <algorithm>
+using namespace std;
 
-/* Overall complexity: O(V + E)
- * where V and E are the number of vertices and edges
- * on the graph, respectively
- */
+const int N = 100100;
 
-const int MaxN = 100100;
+int visited[N];
+vector<int> graph[N];
+stack<int> qu;
 
-int visited[MaxN], lowlink[MaxN], inqu[MaxN], tag = 0;
-vector<int> adj[MaxN];
-queue<int> qu;
-
-void topological_sort(int u) {
-    visited[u] = lowlink[u] = ++tag;
-    qu.push(u);
-    inqu[u] = 1;
-    for (int v : adj[u]) {
-        if (!visited[v]) {
-            topological_sort(v);
-            lowlink[u] = min(lowlink[u], lowlink[v]);
-        } else if (inqu[v]) {
-            lowlink[u] = min(lowlink[u], lowlink[v]);
-        }
+void topologicalSort(int u) {
+    visited[u] = 1;
+    for (int v : graph[u]) {
+        if (!visited[v])
+            topologicalSort(v);
     }
+    qu.push(u);
+}
+
+int main() {
+
+    int n, q;
+    scanf("%d %d", &n, &q);
+
+    int u, v;
+    for (int i = 0; i < q; ++i) {
+        scanf("%d %d", &u, &v);
+        graph[u].push_back(v);
+    }
+
+    for (int i = 1; i <= n; ++i) {
+        if (!visited[i])
+            topologicalSort(i);
+    }
+
+    while (!qu.empty()) {
+        int top = qu.top();
+        qu.pop();
+        printf("%d ", top);
+    }
+
+
+    return 0;
 }
