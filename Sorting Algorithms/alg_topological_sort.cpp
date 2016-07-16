@@ -1,46 +1,25 @@
 #include <cstdio>
+#include <cstring>
 #include <vector>
-#include <stack>
-#include <algorithm>
 using namespace std;
 
 const int N = 100100;
 
-int visited[N];
-vector<int> graph[N];
-stack<int> qu;
+bool visited[N];
+vector <int> graph[N];
+vector <int> ans;
 
-void topologicalSort(int u) {
-    visited[u] = 1;
-    for (int v : graph[u]) {
-        if (!visited[v])
-            topologicalSort(v);
-    }
-    qu.push(u);
+void DFS(int u) {
+    visited[u] = true;
+    for (int v : graph[u])
+        if (!visited[v]) DFS(v);
+    ans.push(u);
 }
 
-int main() {
-
-    int n, q;
-    scanf("%d %d", &n, &q);
-
-    int u, v;
-    for (int i = 0; i < q; ++i) {
-        scanf("%d %d", &u, &v);
-        graph[u].push_back(v);
-    }
-
-    for (int i = 1; i <= n; ++i) {
-        if (!visited[i])
-            topologicalSort(i);
-    }
-
-    while (!qu.empty()) {
-        int top = qu.top();
-        qu.pop();
-        printf("%d ", top);
-    }
-
-
-    return 0;
+void topoSort(int n) {
+    memset(visited, false, sizeof(bool) * (n + 1));
+    ans.clear();
+    for (int i = 0; i < n; ++i)
+        if (!visited[i]) DFS(i);
+    reverse(ans.begin(), ans.end());
 }
