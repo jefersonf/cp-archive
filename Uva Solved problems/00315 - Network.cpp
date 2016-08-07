@@ -20,9 +20,9 @@ void dfs(int u, int p) {
 	for (int v : g[u]) {
 		if (!vis[v]) {
 			dfs(v, u);
-            nc++;
+                        nc++;
 			if (low[v] >= d[u]) any = true;
-            low[u] = min(low[u], low[v]);
+                        low[u] = min(low[u], low[v]);
 		} else if (v != p) {
 			low[u] = min(low[u], d[v]);
 		}
@@ -37,11 +37,11 @@ void dfs(int u, int p) {
 
 void reset(int n) {
     tm = 0;
-	range(i, n+1) {
-		vis[i] = false;
-		g[i].clear();
-		d[i] = low[i] = critical[i] = 0;
-	}
+    range(i, n+1) {
+    	vis[i] = false;
+	g[i].clear();
+	d[i] = low[i] = critical[i] = 0;
+    }
 }
 
 int main() {
