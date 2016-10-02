@@ -19,7 +19,7 @@ void tarjanDFS(int u) {
 			tarjanDFS(v);
 			lowlnk[u] = min(lowlnk[u], lowlnk[v]);
 		} else if (inHeap[v]) {
-			lowlnk[u] = min(lowlnk[u], lowlnk[v]);
+			lowlnk[u] = min(lowlnk[u], visited[v]);
 		}
 	}
 
@@ -33,3 +33,31 @@ void tarjanDFS(int u) {
 		} while (top != u);
 	}
 }	
+
+int main() {
+	
+	scanf("%d %d", &nV, &nE);
+
+	int u, v;
+	for (int i = 0; i < nE; ++i) {
+		scanf("%d %d", &u, &v);
+		graph[u].push_back(v);
+	}
+
+	for (int i = 1; i <= nV; ++i) {
+		if (!visited[i])
+			tarjanDFS(i);
+	}
+
+	printf("scc: %d\n", scc_cnt);
+
+	for (int i = 0; i <= 2*nV; ++i) {
+		printf("%d ", lowlnk[i]);
+	} printf("\n");
+
+	for (int i = 0; i <= 2*nV; ++i) {
+		printf("%d ", visited[i]);
+	} printf("\n");
+
+	return 0;
+}
