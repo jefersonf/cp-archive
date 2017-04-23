@@ -1,37 +1,60 @@
 #include <iostream>
 #include <queue>
-#include <set>
+#include <vector>
 #include <cstring>
 using namespace std;
 
 const int N = 10010;
 
 bool seen[N];
-int parent[N];
-set <int> graph[N];
+int R, C, Q;
+int tag, parent[N], d[N], low[N];
+int rnk[N], p[N];
+vector<int> graph[N];
 
-void init(int n) {
-  for (int i = 0; i <= n; ++i) {
+void init() {
+  tag = 1;
+  for (int i = 0; i <= R; ++i) {
     graph[i].clear();
-    parent[i] = i;
+    seen[i] = false;
+    parent[i] = 0;
+    d[i] = 0;
+    p[i] = i;
+    rnk[i] = 0;
   }
 }
 
-bool findAnotherPath(int u, int v, int n) {
-  memset(seen, false, sizeof(bool)*(n+1));
-  queue <int> qu;
-  qu.push(u);
-  while (!qu.empty()) {
-    int w = qu.front();
-    qu.pop();
-    if (seen[w]) continue;
-    seen[w] = true;
-    if (w == v) return true;
-    for (int h : graph[w]) {
-      if (!seen[h]) qu.push(h);
+int find_set(int x) {
+  if (x == p[x]) return x;
+  return p[x] = find_set(p[x]);
+}
+
+void connect(int i, int j) {
+  int x = find_set(i), y = find_set(j);
+  if (rnk[x] > rnk[y]) {
+    p[y] = x;
+  } else {
+    p[x] = y;
+    if (rnk[x] == rnk[y]) rnk[y]++;
+  }
+}
+
+bool areTheyInTheSameSet(int u, int v) {
+  return find_set(u) == find_set(v);
+}
+
+bool DFS(int u) {
+  d[u] = low[u] = tag++;
+  for (int v : graph[u]) {
+    if (d[v] == 0) {
+      parent[v] = u;
+      DFS(v);
+      if (low[v] > d[u]) connect(u, v);
+      low[u] = min(low[u], low[v]);
+    } else if (v != parent[u]) {
+      low[u] = min(low[u], d[v]);
     }
   }
-  return false;
 }
 
 int main() {
@@ -39,62 +62,26 @@ int main() {
   ios_base::sync_with_stdio(0);
   cin.tie(0);
 
-  int i, R, C, Q;
-  while (cin >> R >> C >> Q) {
-      if (R==0 && C==0 && Q==0) break;
-      init(R);
-      int u, v;
+  while (cin >> R >> C >> Q, R && C && Q)
+  {
+      init();
+      int i, u, v;
       for (i = 0; i < C; ++i) {
         cin >> u >> v;
-        graph[u].insert(v);
-        graph[v].insert(u);
+        graph[u].push_back(v);
+        graph[v].push_back(u);
+      }
+
+      for (i = 1; i <= R; ++i) {
+        if (d[i] == 0) DFS(i);
       }
 
       while (Q--)
       {
         cin >> u >> v;
-        memset(seen, false, sizeof(bool)*(R+1));
-        queue <int> qu;
-        qu.push(u);
-        bool has_path = false;
-        while (!qu.empty())
-        {
-          int s = qu.front();
-          qu.pop();
-          if (seen[s]) continue;
-          seen[s] = true;
-          if (s == v) {
-            has_path = true;
-            break;
-          }
-          for (int w : graph[s]) {
-            if (!seen[w]) {
-              qu.push(w);
-              parent[w] = s;
-            }
-          }
-        }
-
-        if (has_path) {
-          int _v = v;
-          bool has_another_path = false;
-          while (v != u) {
-            if (graph[v].size() > 1) {
-              graph[parent[v]].erase(v);
-              graph[v].erase(parent[v]);
-              has_another_path = findAnotherPath(u, _v, R);
-              graph[parent[v]].insert(v);
-              graph[v].insert(parent[v]);
-              if (has_another_path) break;
-            }
-            v = parent[v];
-          }
-          has_another_path ? cout << "N" : cout << "Y";
-        } else {
-          cout << "N";
-        }
-        cout << '\n';
+        areTheyInTheSameSet(u, v) ? cout << "Y\n" : cout << "N\n";
       }
+
       cout << "-\n";
   }
 
