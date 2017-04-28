@@ -21,7 +21,6 @@ int main() {
     int t = qu.front();
     qu.pop();
     if (t > N) break;
-    int l = (t % 10) + 1;
     for (int i = ((t % 10) + 1); i < 10; ++i) {
       int x = t*10 + i;
       if (mp.count(x) == 0) {
