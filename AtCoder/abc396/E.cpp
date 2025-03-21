@@ -2,7 +2,7 @@
 using namespace std;
 
 #define rep(i,a,b) for(int i=a; i<=b; i++)
-#define LEN(v) ((int)v.size())
+#define len(v) ((int)v.size())
 typedef long long ll;
 
 vector<bool> visited;
@@ -59,7 +59,7 @@ int main()
             for (int k : comp) {
                 if (a[k] & p) ones++;
             }
-            if (ones > LEN(comp) - ones) {
+            if (ones > len(comp) - ones) {
                 for (int k : comp) {
                     p = (1LL << j);
                     if (a[k] & p) {
@@ -67,15 +67,12 @@ int main()
                     } else {
                         a[k] |= p;
                     }
-
                 }
             }
         }
     }
 
-    for (auto x : a) {
-        cout << x << " ";
-    }
+    for (auto x : a) {  cout << x << " "; }
     cout << "\n";
 
     return 0;
