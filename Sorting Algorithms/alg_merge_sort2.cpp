@@ -33,8 +33,8 @@ void mergeSort(int A[], int i, int j) {
     if (i < j) {
         int m = (i + j) / 2;
         mergeSort(A, i, m);
-	mergeSort(A, m + 1, j);
-	merge(A, i, m, j);
+	    mergeSort(A, m + 1, j);
+	    merge(A, i, m, j);
     }
 }
 
