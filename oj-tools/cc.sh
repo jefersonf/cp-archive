@@ -5,7 +5,7 @@ tasks=$2
 dir=$3
 
 DEFAULT_CONTEST_ID="unknown"
-ALL_TASKS="ABCDE"
+ALL_TASKS="ABCDEFG"
 DIR="."
 
 [ -z $contestID ] && contestID=$DEFAULT_CONTEST_ID
@@ -26,4 +26,3 @@ for t in $(seq 1 $n); do
 	create_task=(cp ./template.cpp "${task_path}")
 	${create_task[@]}
 done
-
