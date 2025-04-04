@@ -7,17 +7,12 @@ typedef long long ll;
 #define pb push_back
 #define el "\n"
 
-void opt() {
-    ios_base::sync_with_stdio(false); cin.tie(NULL);
-}
-
 void solve(int tc) { 
     //cout << "test case: " << tc << endl;
 }
 
 int main() {
-    opt();
-
+    ios_base::sync_with_stdio(false); cin.tie(NULL);
     freopen("tc.in", "r", stdin);
     //freopen("tc.out", "w", stdout);
 
